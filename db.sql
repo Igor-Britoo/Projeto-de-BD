@@ -4,9 +4,9 @@ use projetoBanco;
 create table IF NOT EXISTS cartao(
 	NumeroCartao int,
 	TipoCartao enum('Debito', 'Credito'),
-	Bandeira int,
-	Validade int,
-	CVV tinyint,
+	Bandeira varchar(15),
+	Validade varchar(5),
+	CVV int,
 	Senha varchar(8),
 	PRIMARY KEY(NumeroCartao,TipoCartao)
 );
@@ -74,6 +74,12 @@ create table IF NOT EXISTS cliente_realiza(
 	FOREIGN KEY(IdCliente) REFERENCES cliente(IdCliente),
 	PRIMARY KEY(IdCliente)
 );
+
+INSERT INTO cartao (NumeroCartao, TipoCartao, Bandeira, Validade, CVV, Senha)
+VALUES (1,'Debito', 'Visa', '10/27', 300, 'senha123');
+
+select * from cartao;
+
 /*
 Descricao das tabelas
 

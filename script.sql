@@ -1,4 +1,3 @@
-
 create database projetoBanco;
 use projetoBanco;
 
@@ -11,6 +10,7 @@ create table IF NOT EXISTS cartao(
 	Senha varchar(8),
 	PRIMARY KEY(NumeroCartao,TipoCartao)
 );
+
 create table IF NOT EXISTS conta(
 	NumeroConta int,
 	TipoConta varchar(10),
@@ -18,11 +18,11 @@ create table IF NOT EXISTS conta(
 	PRIMARY KEY(NumeroConta,TipoConta)
 );
 
-create table IF NOT EXISTS operação(
-	CodigoOperação int,
-	TipoOperação varchar(10),
-	valor int,
-	PRIMARY KEY(CodigoOperação,TipoOperação)
+create table IF NOT EXISTS operacao(
+	CodigoOperacao int,
+	TipoOperacao varchar(10),
+	Valor int,
+	PRIMARY KEY(CodigoOperacao,TipoOperacao)
 );
 
 create table IF NOT EXISTS pessoa_fisica(
@@ -36,16 +36,18 @@ create table IF NOT EXISTS pessoa_fisica(
 	UF varchar(2),
 	PRIMARY KEY(Cpf)
 );
-create table IF NOT EXISTS pessoa_jurídica(
-	Cpnj int,
+
+create table IF NOT EXISTS pessoa_juridica(
+	Cnpj int,
 	RazaoSocial varchar(20),
 	Rua varchar(15),
 	Numero int,
 	Bairro varchar(10),
 	Cidade varchar(10),
 	UF varchar(2),
-	PRIMARY KEY (Cpnj)
+	PRIMARY KEY (Cnpj)
 );
+
 create table IF NOT EXISTS cliente_possui(
 	IdCliente int,
 	NumeroCartao int,
@@ -56,13 +58,14 @@ create table IF NOT EXISTS cliente_possui(
 	FOREIGN KEY(NumeroConta,TipoConta) REFERENCES conta(NumeroConta,TipoConta),
 	PRIMARY KEY(IdCliente)
 );
+
 create table IF NOT EXISTS cliente_realiza(
-	IdCliente2 int,
+	IdCliente int,
 	NumeroConta int,
 	TipoConta varchar(10),
-	CodigoOperação int,
-	TipoOperação varchar(10),
-	PRIMARY KEY (IdCliente2),
-FOREIGN KEY(NumeroConta,TipoConta) REFERENCES conta(NumeroConta,TipoConta),
-FOREIGN KEY(CodigoOperação,TipoOperação) REFERENCES operação(CodigoOperação,TipoOperação)
+	CodigoOperacao int,
+	TipoOperacao varchar(10),
+	PRIMARY KEY (IdCliente),
+	FOREIGN KEY(NumeroConta,TipoConta) REFERENCES conta(NumeroConta,TipoConta),
+	FOREIGN KEY(CodigoOperacao,TipoOperacao) REFERENCES operacao(CodigoOperacao,TipoOperacao)
 );

@@ -19,7 +19,7 @@ create table IF NOT EXISTS conta(
 );
 
 create table IF NOT EXISTS operacao(
-	CodigoOperacao int,
+	CodigoOperacao int NOT NULL AUTO_INCREMENT,
 	TipoOperacao enum('Saque','Pagamento'),
 	Valor int,
 	PRIMARY KEY(CodigoOperacao,TipoOperacao)
@@ -74,11 +74,6 @@ create table IF NOT EXISTS cliente_realiza(
 	FOREIGN KEY(IdCliente) REFERENCES cliente(IdCliente),
 	PRIMARY KEY(IdCliente)
 );
-
-INSERT INTO cartao (NumeroCartao, TipoCartao, Bandeira, Validade, CVV, Senha)
-VALUES (1,'Debito', 'Visa', '10/27', 300, 'senha123');
-
-select * from cartao;
 
 /*
 Descricao das tabelas

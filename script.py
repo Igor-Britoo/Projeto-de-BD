@@ -20,7 +20,6 @@ conta = {
 }
 
 operacao = {
-    'codigo': '',
     'tipo': '',
     'valor': ''
 }
@@ -84,7 +83,6 @@ def inserir_dados (inserir):
         if con.is_connected():
             cursor.close()  
             con.close()
-            cartao.clear()
             print('Conexão ao MySQL finalizada')
 
 print('\nScript para populacao do banco de dados')
@@ -103,6 +101,7 @@ print('7. Cliente Possui')
 print('8. Cliente Realiza')
 
 tipo_insercao = int(input('Digite o numero da opcao escolhida:'))
+print('\n\n')
 
 if tipo_insercao == 1:      # Cartao
     cartao['num'] = str(int(input('Digite o numero do cartao:')))
@@ -127,16 +126,94 @@ if tipo_insercao == 1:      # Cartao
     inserir_dados(inserir_cartao)
     
 elif tipo_insercao == 2:    # Conta
+    conta['num'] = str(int(input('Digite o numero da conta:')))
+    print("Escolha o tipo da conta\n")
+    print('1. Conta-corrente')
+    print('2. Conta-salario')
+    print('3. Conta-poupanca')
+    tipo_conta = int(input('Digite o numero da opcao escolhida:'))
+    if tipo_conta == 1:
+        conta['tipo'] = 'Conta-corrente'
+    elif tipo_conta == 2:
+        conta['tipo'] = 'Conta-salario'
+    else:
+        conta['tipo'] = 'Conta-poupanca'
+    conta['saldo'] = str(int(input("Digite o saldo da conta:")))
     
-    
+    dados = '(' + conta['num'] + ',\'' + conta['tipo'] + '\',' + conta['saldo'] + ')'
+    declaracao = """INSERT INTO conta
+    (NumeroConta, TipoConta, Saldo)
+    VALUES """
+    inserir_conta = declaracao + dados
+    inserir_dados(inserir_conta)
+
 elif tipo_insercao == 3:    # Operacao
-    pass
+    print("Escolha o tipo da operacao\n")
+    print('1. Saque')
+    print('2. Pagamento')
+    tipo_operacao = int(input('Digite o numero da opcao escolhida:'))
+    if tipo_operacao == 1:
+        operacao['tipo'] = 'Saque'
+    else:
+        operacao['tipo'] = 'Pagamento'
+    operacao['valor'] = str(int(input("Digite o saldo da conta:")))
+    
+    dados = '(\'' + operacao['tipo'] + '\',' + operacao['valor'] + ')'
+    declaracao = """INSERT INTO operacao
+    (TipoOperacao, Valor)
+    VALUES """
+    inserir_operacao = declaracao + dados
+    inserir_dados(inserir_operacao)
+
 elif tipo_insercao == 4:    # Cliente
-    pass
+    cliente['id'] = str(int(input('Digite o cpf ou cnpj do cliente: ')))
+    print("Escolha o tipo do cliente\n")
+    print('1. Pessoa Fisica')
+    print('2. Pessoa Juridica')
+    tipo_cliente = int(input('Digite o numero da opcao escolhida:'))
+    if tipo_cliente == 1:
+        cliente['tipo'] = 'PF'
+    else:
+        cliente['tipo'] = 'PJ'
+    endereco_cliente['rua'] = input('Digite o nome da sua rua:')
+    endereco_cliente['num'] = str(int(input('Digite o numero da sua residencia:')))
+    endereco_cliente['bairro'] = input('Digite o nome do seu bairro:')
+    endereco_cliente['cidade'] = input('Digite o nome da sua cidade:')
+    endereco_cliente['uf'] = input('Digite a sigla do seu estado:')
+
+    dados = '(' + cliente['id']  +  ',\'' + cliente['tipo'] + '\',\'' + endereco_cliente['rua'] + '\',' + endereco_cliente['num'] + ',\'' + endereco_cliente['bairro'] + '\',\'' + endereco_cliente['cidade'] + '\',\'' + endereco_cliente['uf'] + '\')'
+    declaracao = """INSERT INTO cliente
+    (IdCliente, TipoCliente, Rua, Numero, Bairro, Cidade, UF)
+    VALUES """
+    inserir_cliente = declaracao + dados
+    inserir_dados(inserir_cliente)
+
 elif tipo_insercao == 5:    # Pessoa Fisica
-    pass
+    pessoa_fisica['cpf'] = str(int(input('Digite o CPJ: ')))
+    pessoa_fisica['nome'] = input('Digite o nome: ')
+    dia = input("Digite o dia de nascimento: ")
+    mes = input("Digite o mes de nascimento: ")
+    ano = input("Digite o ano de nascimento: ")
+    pessoa_fisica['data_nascimento'] = str(ano + '-' + mes + '-' + dia);
+    
+    dados = '(' + pessoa_fisica['cpf']  + ',\'' + pessoa_fisica['nome'] + '\',\'' + pessoa_fisica['data_nascimento'] + '\')'
+    declaracao = """INSERT INTO pessoa_fisica
+    (Cpf, Nome ,DataNascimento)
+    VALUES """
+    inserir_pf = declaracao + dados
+    inserir_dados(inserir_pf)
+
 elif tipo_insercao == 6:    # Pessoa Juridica
-    pass
+    pessoa_juridica['cnpj'] = str(int(input('Digite o CNPJ: ')))
+    pessoa_juridica['razao_social'] = input('Digite a razao social: ')
+
+    dados = '(' + pessoa_juridica['cnpj']  + ',\'' + pessoa_juridica['razao_social'] + '\')'
+    declaracao = """INSERT INTO pessoa_juridica
+    (Cnpj, RazaoSocial)
+    VALUES """
+    inserir_pj = declaracao + dados
+    inserir_dados(inserir_pj)
+    
 elif tipo_insercao == 7:    # Cliente Possui
     pass
 else:                       # Cliente Realiza

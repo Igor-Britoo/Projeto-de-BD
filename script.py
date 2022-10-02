@@ -70,8 +70,8 @@ print('Favor inserir os dados conforme solicitado\n')
 
 senha_mysql = input("Digite a senha do seu user 'root' do mysql: ")
 
-con = mysql.connector.connect(host = 'localhost', database = 'projetoBanco', user='root', password=senha_mysql)
 def inserir_dados (inserir):
+    con = mysql.connector.connect(host = 'localhost', database = 'bancoDigital', user='root', password=senha_mysql)
     try:
         if con.is_connected():
             db_info = con.get_server_info()
@@ -89,6 +89,85 @@ def inserir_dados (inserir):
             cursor.close()  
             con.close()
             print('Conexão ao MySQL finalizada')
+
+def populacao_default():
+    dados = """(1, 'PF', 'Trinta', 54, 'Boa Vista', 'Recife', 'PE'),
+            (2, 'PF', 'Quarenta', 156, 'Boa Viagem', 'Recife', 'PE'),
+            (11, 'PJ', 'Chico Science', 1535, 'Pina', 'Recife', 'PE'),
+            (22, 'PJ', 'Padrao', 250, 'Madalena', 'Recife', 'PE')"""
+    declaracao = """INSERT INTO cliente
+    (IdCliente, TipoCliente, Rua, Numero, Bairro, Cidade, UF)
+    VALUES """
+    inserir_cliente = declaracao + dados
+    inserir_dados(inserir_cliente)
+
+    dados = """(1, 'Maria', '1999-05-25'),
+            (2, 'Jose', '1997-09-15')"""
+    declaracao = """INSERT INTO pessoa_fisica
+    (Cpf, Nome ,DataNascimento)
+    VALUES """
+    inserir_pf = declaracao + dados
+    inserir_dados(inserir_pf)  
+
+    dados = """(11, 'LancheDaora'),
+            (22, 'Moto&Bike')"""
+    declaracao = """INSERT INTO pessoa_juridica
+    (Cnpj, RazaoSocial)
+    VALUES """
+    inserir_pj = declaracao + dados
+    inserir_dados(inserir_pj)
+
+    dados = """(111222, 'Debito', 'Visa', '12/26', 102, 998877),  
+            (222333, 'Debito', 'Visa', '10/27', 103, 445566),  
+            (333444, 'Credito', 'Master', '10/25', 105, 112233),
+            (444555, 'Credito', 'Master', '08/30', 55, 422442)"""
+    declaracao = """INSERT INTO cartao
+    (NumeroCartao, TipoCartao, Bandeira, Validade, CVV, Senha)
+    VALUES """
+    inserir_cartao = declaracao + dados
+    inserir_dados(inserir_cartao)
+
+    dados = """(554477, 'Conta-corrente', 1000),
+            (663322, 'Conta-poupanca', 500),
+            (994422, 'Conta-corrente', 8500),
+            (442277, 'Conta-corrente', 1500)"""
+    declaracao = """INSERT INTO conta
+    (NumeroConta, TipoConta, Saldo)
+    VALUES """
+    inserir_conta = declaracao + dados
+    inserir_dados(inserir_conta)
+
+    dados = """('Saque',300),
+            ('Pagamento',500),
+            ('Pagamento',260),
+            ('Saque',785)"""
+    declaracao = """INSERT INTO operacao
+    (TipoOperacao, Valor)
+    VALUES """
+    inserir_operacao = declaracao + dados
+    inserir_dados(inserir_operacao)
+
+    dados = """(1, 111222, 'Debito', 554477, 'Conta-corrente'),
+            (2, 222333, 'Debito', 663322, 'Conta-poupanca'),
+            (11, 333444, 'Credito', 994422, 'Conta-corrente'),
+            (22, 444555, 'Credito', 442277, 'Conta-corrente')"""
+    declaracao = """INSERT INTO cliente_possui
+    (IdCliente, NumeroCartao, TipoCartao, NumeroConta, TipoConta)
+    VALUES """
+    inserir_cliente_possui = declaracao + dados
+    inserir_dados(inserir_cliente_possui)
+
+    dados = """('1', 554477, 'Conta-corrente', '1','Saque'),
+            ('2', 663322, 'Conta-poupanca', '2','Pagamento'),
+            ('11', 994422, 'Conta-corrente', '3','Pagamento'),
+            ('22', 442277, 'Conta-corrente', '4','Saque')"""
+    declaracao = """INSERT INTO cliente_realiza
+    (IdCliente, NumeroConta, TipoConta, CodigoOperacao, TipoOperacao)
+    VALUES """
+    inserir_cliente_realiza = declaracao + dados
+    inserir_dados(inserir_cliente_realiza)
+
+populacao_default()
 
 insert = True
 while insert:
@@ -196,7 +275,7 @@ while insert:
         dia = input("Digite o dia de nascimento: ")
         mes = input("Digite o mes de nascimento: ")
         ano = input("Digite o ano de nascimento: ")
-        pessoa_fisica['data_nascimento'] = str(ano + '-' + mes + '-' + dia);
+        pessoa_fisica['data_nascimento'] = str(ano + '-' + mes + '-' + dia)
         
         dados = '(' + pessoa_fisica['cpf']  + ',\'' + pessoa_fisica['nome'] + '\',\'' + pessoa_fisica['data_nascimento'] + '\')'
         declaracao = """INSERT INTO pessoa_fisica
@@ -285,7 +364,6 @@ while insert:
         (IdCliente, NumeroConta, TipoConta, CodigoOperacao, TipoOperacao)
         VALUES """
         inserir_cliente_realiza = declaracao + dados
-        print(inserir_cliente_realiza)
         inserir_dados(inserir_cliente_realiza)
     
     print("\n\nDeseja continuar a inserir dados ?")

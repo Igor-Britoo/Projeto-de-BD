@@ -1,5 +1,5 @@
-create database projetoBanco;
-use projetoBanco;
+create database bancoDigital;
+use bancoDigital;
 
 create table IF NOT EXISTS cartao(
 	NumeroCartao int,
@@ -90,7 +90,6 @@ describe pessoa_juridica;
 ----------------------------------------
 
 Consultas simples
-select * from
 select * from cartao;
 select * from cliente;
 select * from cliente_possui;
